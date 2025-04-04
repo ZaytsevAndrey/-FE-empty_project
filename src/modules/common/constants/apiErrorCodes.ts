@@ -1,0 +1,4 @@
+export const INVALID_JWT = 'INVALID_JWT';
+export const EMPTY_JWT = 'EMPTY_JWT';
+export const INVALID_SESSION = 'INVALID_SESSION';
+export const INVALID_REFRESH_TOKEN = 'INVALID_REFRESH_TOKEN';
