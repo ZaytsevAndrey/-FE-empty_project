@@ -4,7 +4,7 @@ import { ResetPasswordFormData } from './types';
 import styles from './ResetPasswordForm.module.scss';
 
 interface Props {
-    onSubmit: (data: ResetPasswordFormData) => void;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     register: UseFormRegister<ResetPasswordFormData>;
     errors: FieldErrors<ResetPasswordFormData>;
     requestStatus: string;
@@ -19,7 +19,7 @@ const ResetPasswordForm: React.FC<Props> = ({
     backendError,
 }) => {
     return (
-        <form className={ styles.form } onSubmit={ (e) => e.preventDefault() }>
+        <form className={ styles.form } onSubmit={ onSubmit }>
             <h2 className={ styles.title }>Скидання паролю</h2>
 
             <div className={ styles.inputGroup }>
@@ -36,18 +36,11 @@ const ResetPasswordForm: React.FC<Props> = ({
                 ) }
             </div>
 
+            { backendError && <div className={ styles.error }>{ backendError }</div> }
+
             <button
                 type="submit"
                 className={ styles.submitButton }
-                onClick={(e) => {
-                    e.preventDefault();
-                    const formData: ResetPasswordFormData = {
-                        code: '',
-                        password: '',
-                        confirmPassword: ''
-                    };
-                    onSubmit(formData);
-                }}
                 disabled={ requestStatus === 'pending' }
             >
                 { requestStatus === 'pending' ? 'Оновлення...' : 'Оновити пароль' }

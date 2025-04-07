@@ -6,6 +6,6 @@ export interface ForgotPasswordFormData {
 
 export interface ForgotPasswordFormProps {
     form: UseFormReturn<ForgotPasswordFormData>;
-    onSubmit: (data: ForgotPasswordFormData) => void;
+    onSubmit: (data: ForgotPasswordFormData) => Promise<void>;
     requestStatus: string;
 }

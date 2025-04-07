@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { AppDispatch } from 'store/types';
-import { sendForgotPasswordEmail } from 'modules/auth/actions/forgotPassword';
+import { forgotPassword } from 'modules/auth/actions/forgotPassword';
 import { getForgotPasswordStatus } from 'modules/auth/selectors/forgotPasswordSelectors';
-import { FORGOT_PASSWORD_EMAIL_SENT } from 'shared/constants/apiErrorCodes';
+// import { FORGOT_PASSWORD_EMAIL_SENT } from 'modules/common/constants/apiErrorCodes';
 import apiErrorMessages from 'modules/common/constants/apiErrorMessages';
 import setBackendErrors from 'modules/common/utils/setBackendErrors';
 import requestsStatuses from 'shared/constants/requestsStatuses';
@@ -37,7 +37,7 @@ const ForgotPasswordFormContainer = () => {
     });
 
     const onSubmit = (data: ForgotPasswordFormData) => {
-        dispatch(sendForgotPasswordEmail(data)).then((response: any) => {
+        dispatch(forgotPassword(data)).then((response: any) => {
             if (response?.error) {
                 setBackendErrors(response.payload, setError);
                 return;

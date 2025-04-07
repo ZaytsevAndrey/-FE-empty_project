@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { AppDispatch } from 'store/types';
@@ -12,12 +11,8 @@ import setBackendErrors from 'modules/common/utils/setBackendErrors';
 import requestsStatuses from 'shared/constants/requestsStatuses';
 
 import EmailVerificationForm from './EmailVerificationForm';
-
-const schema = z.object({
-    email: z.string().email('Некоректний email'),
-});
-
-export type EmailVerificationFormData = z.infer<typeof schema>;
+import { EmailVerificationFormData } from './types';
+import schema from './validation/schema';
 
 const EmailVerificationFormContainer = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -34,18 +29,13 @@ const EmailVerificationFormContainer = () => {
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = (data: EmailVerificationFormData) => {
-        dispatch(sendVerificationCode({ email: data.email }))
-            .then((response: any) => {
-                if (response?.error) {
-                    setBackendErrors(response.payload, setError);
-                    return;
-                }
-
-                if (response?.meta?.requestStatus === 'fulfilled') {
-                    navigate('/reset-password');
-                }
-            });
+    const onSubmit = async (data: EmailVerificationFormData) => {
+        try {
+            await dispatch(sendVerificationCode({ email: data.email }));
+            navigate('/reset-password');
+        } catch (error: any) {
+            setBackendErrors(error?.fields ?? {}, setError);
+        }
     };
 
     useEffect(() => {
@@ -56,7 +46,8 @@ const EmailVerificationFormContainer = () => {
 
     return (
         <EmailVerificationForm
-            onSubmit={ handleSubmit(onSubmit) }
+            onSubmit={ onSubmit }
+            handleSubmit = { handleSubmit }
             register={ register }
             errors={ errors }
             requestStatus={ requestStatus }

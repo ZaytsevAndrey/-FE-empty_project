@@ -1,23 +1,17 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { LoginFormProps } from './types';
 import styles from './LoginForm.module.scss';
-import loginSchema, { LoginFormData } from './validation/schema';
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, requestStatus }) => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema),
-    });
-
+const LoginForm: React.FC<LoginFormProps> = ({
+                                                 onSubmit,
+                                                 register,
+                                                 errors,
+                                                 requestStatus,
+                                             }) => {
     return (
-        <form className={ styles.loginForm } onSubmit={ handleSubmit(onSubmit) }>
+        <form className={ styles.loginForm } onSubmit={ onSubmit }>
             <h2 className={ styles.title }>Логін</h2>
 
             <div className={ styles.inputGroup }>

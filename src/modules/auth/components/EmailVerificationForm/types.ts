@@ -4,5 +4,5 @@ export interface EmailVerificationFormProps {
 }
 
 export type EmailVerificationFormData = {
-    code: string;
+    email: string;
 };

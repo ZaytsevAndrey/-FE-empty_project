@@ -23,6 +23,7 @@ const LoginFormContainer = () => {
     const {
         handleSubmit,
         setError,
+        formState: { isSubmitting, errors },
         ...form
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -36,7 +37,7 @@ const LoginFormContainer = () => {
 
     useEffect(() => {
         if (backendError) {
-            setBackendErrors<LoginFormData>(backendError, setError);
+            setBackendErrors<LoginFormData>({ general: backendError }, setError);
         }
     }, [backendError, setError]);
 
@@ -49,6 +50,8 @@ const LoginFormContainer = () => {
             { ...form }
             onSubmit={ handleSubmit(onSubmit) }
             requestStatus={ loginStatus }
+            isSubmitting={ isSubmitting }
+            errors={ errors }
         />
     );
 };

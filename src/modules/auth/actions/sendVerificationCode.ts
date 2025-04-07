@@ -13,7 +13,7 @@ export function sendVerificationCode(data: EmailVerificationFormData) {
 
         return apiCall(() =>
             api.post('/auth/send-verification-code', {
-                code: data.code,
+                code: data.email ,
             })
         )
             .then(() => {

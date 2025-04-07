@@ -1,11 +1,13 @@
-export interface LoginFormProps {
-    onSubmit: (data: LoginFormData) => void;
-    isSubmitting: boolean;
-    error?: string;
-    requestStatus: string;
-}
+import {
+    UseFormRegister,
+    FieldErrors,
+} from 'react-hook-form';
+import { LoginFormData } from './validation/schema';
 
-export interface LoginFormData {
-    username: string;
-    password: string;
+export interface LoginFormProps {
+    register: UseFormRegister<LoginFormData>;
+    errors: FieldErrors<LoginFormData>;
+    requestStatus: string;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    isSubmitting: boolean;
 }

@@ -1,23 +1,25 @@
 import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { EmailVerificationFormData } from './EmailVerificationFormContainer';
+import { UseFormRegister, FieldErrors, UseFormHandleSubmit } from 'react-hook-form';
+import { EmailVerificationFormData } from './types';
 import styles from './EmailVerificationForm.module.scss';
 
 interface Props {
     onSubmit: (data: EmailVerificationFormData) => void;
     register: UseFormRegister<EmailVerificationFormData>;
     errors: FieldErrors<EmailVerificationFormData>;
+    handleSubmit: UseFormHandleSubmit<EmailVerificationFormData>;
     requestStatus: string;
 }
 
 const EmailVerificationForm: React.FC<Props> = ({
-                                                    onSubmit,
-                                                    register,
-                                                    errors,
-                                                    requestStatus,
-                                                }) => {
+    onSubmit,
+    register,
+    errors,
+    requestStatus,
+    handleSubmit,
+}) => {
     return (
-        <form className={ styles.form } onSubmit={ (e) => e.preventDefault() }>
+        <form className={ styles.form } onSubmit={ handleSubmit(onSubmit) }>
             <h2 className={ styles.title }>Підтвердження пошти</h2>
 
             <div className={ styles.inputGroup }>
@@ -30,7 +32,6 @@ const EmailVerificationForm: React.FC<Props> = ({
                 type="submit"
                 className={ styles.submitButton }
                 disabled={ requestStatus === 'pending' }
-                onClick={ onSubmit }
             >
                 { requestStatus === 'pending' ? 'Відправка...' : 'Надіслати код' }
             </button>

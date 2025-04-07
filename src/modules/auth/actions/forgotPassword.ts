@@ -21,3 +21,5 @@ export function forgotPassword(data: ForgotPasswordFormData) {
             });
     };
 }
+
+export default forgotPassword;

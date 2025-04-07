@@ -1,10 +1,10 @@
 import React from 'react';
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { ForgotPasswordFormData } from './ForgotPasswordFormContainer';
+import { ForgotPasswordFormData } from './types';
 import styles from './ForgotPasswordForm.module.scss';
 
 interface Props {
-    onSubmit: (data: ForgotPasswordFormData) => void;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
     register: UseFormRegister<ForgotPasswordFormData>;
     errors: FieldErrors<ForgotPasswordFormData>;
     requestStatus: string;
@@ -17,7 +17,7 @@ const ForgotPasswordForm: React.FC<Props> = ({
     requestStatus,
 }) => {
     return (
-        <form className={ styles.form } onSubmit={ (e) => e.preventDefault() }>
+        <form className={ styles.form } onSubmit={ onSubmit }>
             <h2 className={ styles.title }>Забули пароль?</h2>
 
             <div className={ styles.inputGroup }>
@@ -30,7 +30,6 @@ const ForgotPasswordForm: React.FC<Props> = ({
                 type="submit"
                 className={ styles.submitButton }
                 disabled={ requestStatus === 'pending' }
-                onClick={ onSubmit }
             >
                 { requestStatus === 'pending' ? 'Відправка...' : 'Надіслати код' }
             </button>

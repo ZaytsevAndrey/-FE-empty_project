@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ const ResetPasswordFormContainer = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const requestStatus = useSelector(getResetPasswordStatus);
-    const [backendError, setBackendError] = React.useState<string | null>(null);
+    const [backendError, setBackendError] = useState<string | null>(null);
 
     const {
         register,
