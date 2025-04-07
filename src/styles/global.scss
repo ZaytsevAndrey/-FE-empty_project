@@ -1,0 +1,16 @@
+@use './variables/colors';
+@use './variables/spacing';
+@use './variables/breakpoints';
+@use './mixins/media';
+@use './mixins/utils';
+@use './base/reset';
+@use './base/typography';
+
+html, body, #root {
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
