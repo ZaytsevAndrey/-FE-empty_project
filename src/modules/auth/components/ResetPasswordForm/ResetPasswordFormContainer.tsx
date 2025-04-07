@@ -1,34 +1,60 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch } from 'store/types';
-
-import { resetPassword } from 'modules/auth/actions/resetPassword';
-import { getResetPasswordStatus } from 'modules/auth/selectors/resetPasswordSelectors';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import ResetPasswordForm from './ResetPasswordForm';
+import { resetPassword } from 'modules/auth/actions/resetPassword';
+import { getResetPasswordStatus } from 'modules/auth/selectors/resetPasswordSelectors';
+import setBackendErrors from 'modules/common/utils/setBackendErrors';
+import { getApiErrorMessage } from 'modules/common/constants/apiErrorMessages';
 import { ResetPasswordFormData } from './types';
 
 const ResetPasswordFormContainer = () => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const requestStatus = useSelector(getResetPasswordStatus);
+    const [backendError, setBackendError] = React.useState<string | null>(null);
 
-    const handleSubmit = (data: ResetPasswordFormData) => {
-        dispatch(resetPassword(data));
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors },
+    } = useForm<ResetPasswordFormData>();
+
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get('token');
+
+    const onSubmit = async (data: ResetPasswordFormData) => {
+        if (!token) return;
+
+        try {
+            await dispatch<any>(
+                resetPassword({
+                    code: token,
+                    password: data.password,
+                    confirmPassword: data.confirmPassword,
+                })
+            );
+            navigate('/login');
+        } catch (error: any) {
+            const errorCode = error?.code as string;
+            setBackendError(errorCode ?? null);
+            setBackendErrors(error?.fields ?? {}, setError);
+        }
     };
 
-    useEffect(() => {
-        if (requestStatus === requestsStatuses.success) {
-            navigate('/login');
-        }
-    }, [requestStatus, navigate]);
+    const errorMessage = backendError ? getApiErrorMessage(backendError) : null;
 
     return (
         <ResetPasswordForm
-            onSubmit={ handleSubmit }
+            onSubmit={ handleSubmit(onSubmit) }
             requestStatus={ requestStatus }
+            register={ register }
+            errors={ errors }
+            backendError={ errorMessage }
         />
     );
 };

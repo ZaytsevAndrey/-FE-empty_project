@@ -1,23 +1,42 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { AppDispatch } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { AppDispatch } from 'store/types';
 import { registerUser } from 'modules/auth/actions/registerUser';
+import { getRegisterStatus, getAuthError } from 'modules/auth/selectors/authSelectors';
 import requestsStatuses from 'shared/constants/requestsStatuses';
-import { getRegisterStatus } from 'modules/auth/selectors/authSelectors';
 
-import RegisterForm from './RegisterForm';
 import { RegisterFormData } from './types';
-
+import { registerSchema } from './validation/schema';
+import RegisterForm from './RegisterForm';
+import setBackendErrors from 'modules/common/utils/setBackendErrors';
 
 const RegisterFormContainer = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate();
-    const registerStatus = useSelector(getRegisterStatus);
 
-    const handleSubmit = (data: RegisterFormData) => {
+    const registerStatus = useSelector(getRegisterStatus);
+    const backendError = useSelector(getAuthError) as Record<string, string> | null;
+
+    const {
+        handleSubmit,
+        setError,
+    } = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
+    });
+
+    const onSubmit = (data: RegisterFormData) => {
         dispatch(registerUser(data));
     };
+
+    useEffect(() => {
+        if (backendError) {
+            setBackendErrors(backendError, setError);
+        }
+    }, [backendError, setError]);
 
     useEffect(() => {
         if (registerStatus === requestsStatuses.success) {
@@ -27,7 +46,7 @@ const RegisterFormContainer = () => {
 
     return (
         <RegisterForm
-            onSubmit={ handleSubmit }
+            onSubmit={ onSubmit }
             requestStatus={ registerStatus }
         />
     );

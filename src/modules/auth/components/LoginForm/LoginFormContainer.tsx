@@ -1,34 +1,32 @@
-import { compose } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import type { AppDispatch } from 'store/types';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from 'store/types';
 import { loginUser } from 'modules/auth/actions/loginUser';
-import { getLoginStatus, getAuthError } from 'modules/auth/selectors/authSelectors';
 import requestsStatuses from 'shared/constants/requestsStatuses';
+import { getLoginStatus, getAuthError } from 'modules/auth/selectors/authSelectors';
 
 import LoginForm from './LoginForm';
-import { LoginFormData } from './types';
+import loginSchema, { LoginFormData } from './validation/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import setBackendErrors from 'modules/common/utils/setBackendErrors';
 
-
-const mapStateToProps = (state: RootState) => ({
-    isSubmitting: getLoginStatus(state) === requestsStatuses.pending,
-    error: getAuthError(state) || undefined,
-});
-
-const mapDispatchToProps = {
-    onSubmit: (data: LoginFormData) => loginUser(data),
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-const LoginFormContainer = (props: PropsFromRedux) => {
-    const { isSubmitting, error, onSubmit } = props;
-    const loginStatus = useSelector(getLoginStatus);
+const LoginFormContainer = () => {
+    const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate();
+
+    const loginStatus = useSelector(getLoginStatus);
+    const backendError = useSelector(getAuthError);
+
+    const {
+        handleSubmit,
+        setError,
+        ...form
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+    });
 
     useEffect(() => {
         if (loginStatus === requestsStatuses.success) {
@@ -36,14 +34,23 @@ const LoginFormContainer = (props: PropsFromRedux) => {
         }
     }, [loginStatus, navigate]);
 
+    useEffect(() => {
+        if (backendError) {
+            setBackendErrors<LoginFormData>(backendError, setError);
+        }
+    }, [backendError, setError]);
+
+    const onSubmit = (data: LoginFormData) => {
+        dispatch(loginUser(data));
+    };
+
     return (
         <LoginForm
-            isSubmitting={isSubmitting}
-            error={error}
-            onSubmit={onSubmit}
+            { ...form }
+            onSubmit={ handleSubmit(onSubmit) }
             requestStatus={ loginStatus }
         />
     );
 };
 
-export default compose(connector)(LoginFormContainer);
+export default LoginFormContainer;
