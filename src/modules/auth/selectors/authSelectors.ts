@@ -16,3 +16,7 @@ export const isAuthenticated = (state: RootState): boolean =>
     Boolean(state.auth.access_token && state.auth.refresh_token);
 
 export const getRegisterStatus = (state: RootState) => state.auth.registerStatus;
+
+
+export const getIsAuthenticated = (state: RootState) =>
+    Boolean(state.auth.access_token);
