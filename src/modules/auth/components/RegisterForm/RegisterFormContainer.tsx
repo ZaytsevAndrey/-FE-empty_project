@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AppDispatch } from 'store/types';
 import { registerUser } from 'modules/auth/actions/registerUser';
 import { getRegisterStatus, getAuthError } from 'modules/auth/selectors/authSelectors';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+import requestsStatuses from 'modules/common/constants/requestsStatuses';
 
 import { RegisterFormData } from './types';
 import { registerSchema } from './validation/schema';

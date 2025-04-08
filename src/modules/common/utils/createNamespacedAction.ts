@@ -1,22 +1,21 @@
-const usedNamespaces: string[] = [];
+const namespaces: string[] = [];
 
 export default function createNamespacedAction(namespace: string) {
-    if (usedNamespaces.includes(namespace)) {
-        throw new Error(`Namespace "${ namespace }" already exists`);
+    const namespacedActions: string[] = [];
+
+    if (namespaces.includes(namespace)) {
+        throw new Error('not unique namespace name');
     }
 
-    usedNamespaces.push(namespace);
-
-    const usedActions: string[] = [];
+    namespaces.push(namespace);
 
     return function createAction(action: string): string {
         const namespacedAction = `${ namespace }_${ action }`;
-
-        if (usedActions.includes(namespacedAction)) {
-            throw new Error(`Action "${ namespacedAction }" already exists in namespace "${ namespace }"`);
+        if (namespacedActions.includes(namespacedAction)) {
+            throw new Error(`not unique action: ${ namespacedAction }`);
         }
 
-        usedActions.push(namespacedAction);
+        namespacedActions.push(namespacedAction);
         return namespacedAction;
     };
 }

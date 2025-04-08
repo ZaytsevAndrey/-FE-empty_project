@@ -11,7 +11,7 @@ import { getForgotPasswordStatus } from 'modules/auth/selectors/forgotPasswordSe
 // import { FORGOT_PASSWORD_EMAIL_SENT } from 'modules/common/constants/apiErrorCodes';
 import apiErrorMessages from 'modules/common/constants/apiErrorMessages';
 import setBackendErrors from 'modules/common/utils/setBackendErrors';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+import requestsStatuses from 'modules/common/constants/requestsStatuses';
 
 import ForgotPasswordForm from './ForgotPasswordForm';
 

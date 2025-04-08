@@ -11,7 +11,7 @@ import {
     EMPTY_JWT,
     INVALID_SESSION,
     INVALID_REFRESH_TOKEN,
-} from 'shared/constants/apiErrorCodes';
+} from 'modules/common/constants/apiErrorCodes';
 
 export default async function apiCall(config: any) {
     try {

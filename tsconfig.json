@@ -13,7 +13,6 @@
     "paths": {
       "modules/*": ["modules/*"],
       "store/*": ["store/*"],
-      "shared/*": ["modules/common/*"],
       "@/*": ["*"]
     }
   },

@@ -15,9 +15,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
             <h2 className={ styles.title }>Логін</h2>
 
             <div className={ styles.inputGroup }>
-                <label htmlFor="username">Email</label>
-                <input id="username" type="email" { ...register('username') } />
-                { errors.username && <span className={ styles.error }>{ errors.username.message }</span> }
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" { ...register('email') } />
+                { errors.email && <span className={ styles.error }>{ errors.email.message }</span> }
             </div>
 
             <div className={ styles.inputGroup }>

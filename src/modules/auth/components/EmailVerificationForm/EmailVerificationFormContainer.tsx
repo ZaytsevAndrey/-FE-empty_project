@@ -8,7 +8,7 @@ import { AppDispatch } from 'store/types';
 import { sendVerificationCode } from 'modules/auth/actions/sendVerificationCode';
 import { getEmailVerificationStatus } from 'modules/auth/selectors/emailVerificationSelectors';
 import setBackendErrors from 'modules/common/utils/setBackendErrors';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+import requestsStatuses from 'modules/common/constants/requestsStatuses';
 
 import EmailVerificationForm from './EmailVerificationForm';
 import { EmailVerificationFormData } from './types';

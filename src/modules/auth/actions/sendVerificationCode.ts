@@ -1,26 +1,27 @@
 import api from 'api/axios';
 import apiCall from 'modules/common/utils/apiCall';
-import createAsyncAction from 'shared/utils/createAsyncAction';
-import createAction from './';
+import createAsyncAction from 'modules/common/utils/createAsyncAction';
+import createAction from './index';
 import { EmailVerificationFormData } from 'modules/auth/components/EmailVerificationForm/types';
+import { errorMessages } from 'modules/auth/constants/errorMessages';
 
 const SEND_VERIFICATION_CODE = createAsyncAction(createAction('SEND_VERIFICATION_CODE'));
 export { SEND_VERIFICATION_CODE };
 
-export function sendVerificationCode(data: EmailVerificationFormData) {
-    return (dispatch: any) => {
-        dispatch({ type: SEND_VERIFICATION_CODE.pending });
+export const sendVerificationCode = (data: EmailVerificationFormData) => async (dispatch: any) => {
+    dispatch({ type: SEND_VERIFICATION_CODE.pending });
 
-        return apiCall(() =>
-            api.post('/auth/send-verification-code', {
-                code: data.email ,
-            })
-        )
-            .then(() => {
-                dispatch({ type: SEND_VERIFICATION_CODE.success });
-            })
-            .catch(() => {
-                dispatch({ type: SEND_VERIFICATION_CODE.failure });
-            });
-    };
-}
+    try {
+        await apiCall({
+            method: 'POST',
+            url: '/auth/send-verification-code',
+            data: {
+                email: data.email,
+            },
+        });
+
+        dispatch({ type: SEND_VERIFICATION_CODE.success });
+    } catch (error: any) {
+        dispatch({ type: SEND_VERIFICATION_CODE.failure });
+    }
+};

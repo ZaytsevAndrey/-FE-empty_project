@@ -1,9 +1,8 @@
-import { loginAsync, registerAsync, refreshTokenAsync } from 'modules/auth/actions';
-import { REGISTER_USER } from '../actions/registerUser';
-import { LOGOUT } from 'modules/auth/actions/logoutActions';
+import { LOGIN, REGISTER_ASYNC, REFRESH_TOKEN_ASYNC, LOGOUT } from 'modules/auth/actions/actionTypes';
 
-import createReducer from 'shared/utils/createReducer';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+
+import createReducer from 'modules/common/utils/createReducer';
+import requestsStatuses from 'modules/common/constants/requestsStatuses';
 
 export interface AuthState {
     loginStatus: string;
@@ -24,13 +23,13 @@ const defaultState: AuthState = {
 };
 
 const authReducer = createReducer<AuthState>(defaultState, {
-    [loginAsync.pending]: (state) => ({
+    [LOGIN.pending]: (state) => ({
         ...state,
         loginStatus: requestsStatuses.pending,
         error: null,
     }),
 
-    [loginAsync.success]: (state, action) => ({
+    [LOGIN.success]: (state, action) => ({
         ...state,
         loginStatus: requestsStatuses.success,
         access_token: action.payload.access_token,
@@ -38,37 +37,37 @@ const authReducer = createReducer<AuthState>(defaultState, {
         error: null,
     }),
 
-    [loginAsync.failure]: (state, action) => ({
+    [LOGIN.failure]: (state, action) => ({
         ...state,
         loginStatus: requestsStatuses.failure,
         error: action.payload,
     }),
 
-    [registerAsync.pending]: (state) => ({
+    [REGISTER_ASYNC.pending]: (state) => ({
         ...state,
         registerStatus: requestsStatuses.pending,
         error: null,
     }),
 
-    [registerAsync.success]: (state) => ({
+    [REGISTER_ASYNC.success]: (state) => ({
         ...state,
         registerStatus: requestsStatuses.success,
         error: null,
     }),
 
-    [registerAsync.failure]: (state, action) => ({
+    [REGISTER_ASYNC.failure]: (state, action) => ({
         ...state,
         registerStatus: requestsStatuses.failure,
         error: action.payload,
     }),
 
-    [refreshTokenAsync.pending]: (state) => ({
+    [REFRESH_TOKEN_ASYNC.pending]: (state) => ({
         ...state,
         refreshStatus: requestsStatuses.pending,
         error: null,
     }),
 
-    [refreshTokenAsync.success]: (state, action) => ({
+    [REFRESH_TOKEN_ASYNC.success]: (state, action) => ({
         ...state,
         refreshStatus: requestsStatuses.success,
         access_token: action.payload.access_token,
@@ -76,23 +75,10 @@ const authReducer = createReducer<AuthState>(defaultState, {
         error: null,
     }),
 
-    [refreshTokenAsync.failure]: (state, action) => ({
+    [REFRESH_TOKEN_ASYNC.failure]: (state, action) => ({
         ...state,
         refreshStatus: requestsStatuses.failure,
         error: action.payload,
-    }),
-
-    [REGISTER_USER.pending]: (state) => ({
-        ...state,
-        registerStatus: requestsStatuses.pending,
-    }),
-    [REGISTER_USER.success]: (state) => ({
-        ...state,
-        registerStatus: requestsStatuses.success,
-    }),
-    [REGISTER_USER.failure]: (state) => ({
-        ...state,
-        registerStatus: requestsStatuses.failure,
     }),
 
     [LOGOUT]: () => ({

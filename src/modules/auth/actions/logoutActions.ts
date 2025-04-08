@@ -1,16 +1,12 @@
-import createAction from './';
+import { LOGOUT } from './actionTypes';
 
-export const LOGOUT = createAction('LOGOUT');
+export const logout = (redirect = false) => async (dispatch: any) => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
 
-export const logout = (redirect = false) => {
-    return (dispatch: any) => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+    dispatch({ type: LOGOUT });
 
-        dispatch({ type: LOGOUT });
-
-        if (redirect) {
-            window.location.href = '/login';
-        }
-    };
+    if (redirect) {
+        window.location.href = '/login';
+    }
 };

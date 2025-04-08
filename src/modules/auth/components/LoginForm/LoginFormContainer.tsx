@@ -4,7 +4,7 @@ import type { AppDispatch } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { loginUser } from 'modules/auth/actions/loginUser';
-import requestsStatuses from 'shared/constants/requestsStatuses';
+import requestsStatuses from 'modules/common/constants/requestsStatuses';
 import { getLoginStatus, getAuthError } from 'modules/auth/selectors/authSelectors';
 
 import LoginForm from './LoginForm';
