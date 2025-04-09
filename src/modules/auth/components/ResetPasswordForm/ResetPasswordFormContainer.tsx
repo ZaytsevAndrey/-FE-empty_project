@@ -22,10 +22,13 @@ const ResetPasswordFormContainer = () => {
         handleSubmit,
         setError,
         formState: { errors },
+        control
     } = useForm<ResetPasswordFormData>();
 
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
+ 
+    console.log(token);
 
     const onSubmit = async (data: ResetPasswordFormData) => {
         if (!token) return;
@@ -33,9 +36,8 @@ const ResetPasswordFormContainer = () => {
         try {
             await dispatch<any>(
                 resetPassword({
-                    code: token,
-                    password: data.password,
-                    confirmPassword: data.confirmPassword,
+                    token: token,
+                    newPassword: data.newPassword,
                 })
             );
             navigate('/login');
@@ -55,6 +57,7 @@ const ResetPasswordFormContainer = () => {
             register={ register }
             errors={ errors }
             backendError={ errorMessage }
+            control={ control }
         />
     );
 };

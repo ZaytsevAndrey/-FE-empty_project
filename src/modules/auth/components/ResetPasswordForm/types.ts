@@ -3,8 +3,8 @@
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 
 export interface ResetPasswordFormData {
-    code: string,
-    password: string;
+    token: string,
+    newPassword: string;
     confirmPassword: string;
 }
 

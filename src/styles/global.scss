@@ -10,7 +10,33 @@ html, body, #root {
   height: 100%;
 }
 
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 a {
   text-decoration: none;
   color: inherit;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+button, input {
+    transition: box-shadow 0.3s ease;
+}
+
+button:hover, input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

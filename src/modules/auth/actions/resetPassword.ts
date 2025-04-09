@@ -8,7 +8,7 @@ import { errorMessages } from 'modules/auth/constants/errorMessages';
 const RESET_PASSWORD = createAsyncAction(createAction('RESET_PASSWORD'));
 export { RESET_PASSWORD };
 
-export const resetPassword = (data: ResetPasswordFormData) => async (dispatch: any) => {
+export const resetPassword = (data: { token: string; newPassword: string }) => async (dispatch: any) => {
     dispatch({ type: RESET_PASSWORD.pending });
 
     try {
@@ -16,8 +16,8 @@ export const resetPassword = (data: ResetPasswordFormData) => async (dispatch: a
             method: 'POST',
             url: '/auth/reset-password',
             data: {
-                code: data.code,
-                password: data.password,
+                token: data.token,
+                newPassword: data.newPassword,
             },
         });
 
